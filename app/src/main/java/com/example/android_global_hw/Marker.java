@@ -7,8 +7,10 @@ public class Marker {
     private String description;
     private String marker;
 
-    public Marker(){
-
+    public Marker(String marker, String description, Bitmap bitmap){
+        this.icon = bitmap;
+        this.description = description;
+        this.marker = marker;
     }
 
     public void setIcon(Bitmap icon) {

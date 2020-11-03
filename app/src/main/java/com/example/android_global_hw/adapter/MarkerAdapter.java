@@ -35,7 +35,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         notifyDataSetChanged();
     }
 
-    MarkerAdapter(Context context, List<Marker> markers){
+    public MarkerAdapter(Context context, List<Marker> markers){
         this.context = context;
         setItems(markers);
     }
