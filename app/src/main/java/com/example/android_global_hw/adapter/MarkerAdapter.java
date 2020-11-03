@@ -25,6 +25,15 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     private int lastPosition = -1;
     private Context context;
 
+    public interface onClickListener{
+        void onMarkerHolderClick(Marker marker);
+    }
+
+    private onClickListener listener;
+
+    public void setOnClickListener(onClickListener listener){
+        this.listener = listener;
+    }
     public void setItems(Collection<Marker> markers){
         markerList.addAll(markers);
         notifyDataSetChanged();
@@ -46,16 +55,6 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         public MarkerViewHolder(View view){
             super(view);
             rootView = view;
-
-            final TextView textView = rootView.findViewById(R.id.marker_description);
-            if(textView != null){
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //TODO
-                    }
-                });
-            }
         }
 
         public  void setChanges(Marker marker){
@@ -94,9 +93,18 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MarkerAdapter.MarkerViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MarkerAdapter.MarkerViewHolder holder, final int position) {
+        final Marker marker = markerList.get(position);
         if(markerList.size() > position){
-            holder.setChanges(markerList.get(position));
+            holder.setChanges(marker);
+        }
+        if(listener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onMarkerHolderClick(marker);
+                }
+            });
         }
         setAnimation(holder.rootView, position);
     }

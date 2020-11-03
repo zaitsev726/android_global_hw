@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.android_global_hw.adapter.MarkerAdapter;
+
+public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +26,10 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.main_fragment, MainFragment.newInstance())
                 //.addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onMarkerHolderClick(Marker marker) {
+
     }
 }

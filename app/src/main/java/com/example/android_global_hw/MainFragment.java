@@ -1,5 +1,6 @@
 package com.example.android_global_hw;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +19,9 @@ import com.example.android_global_hw.adapter.MarkerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment{
     private List<Marker> markerList;
+    private MarkerAdapter.onClickListener listener;
 
     public MainFragment() {
         // Required empty public constructor
@@ -29,6 +31,14 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof MarkerAdapter.onClickListener){
+            listener = (MarkerAdapter.onClickListener) context;
+        }
     }
 
     public static MainFragment newInstance() {
