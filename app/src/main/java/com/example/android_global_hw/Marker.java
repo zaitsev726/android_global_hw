@@ -22,4 +22,16 @@ public class Marker {
     public void setMarker(String marker) {
         this.marker = marker;
     }
+
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getMarker() {
+        return marker;
+    }
 }

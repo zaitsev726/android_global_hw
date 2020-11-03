@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainFragment">
+
+    <ImageView
+        android:id="@+id/marker_icon"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:paddingBottom="15dp"
+        />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/marker_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/default_description"
+        />
+
+</LinearLayout>

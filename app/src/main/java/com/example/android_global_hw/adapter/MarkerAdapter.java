@@ -1,39 +1,122 @@
 package com.example.android_global_hw.adapter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_global_hw.Marker;
+import com.example.android_global_hw.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
+    private List<Marker> markerList = new ArrayList<>();
+    private int lastPosition = -1;
+    private Context context;
+
+    public void setItems(Collection<Marker> markers){
+        markerList.addAll(markers);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems(){
+        markerList.clear();
+        notifyDataSetChanged();
+    }
+
+    MarkerAdapter(Context context, List<Marker> markers){
+        this.context = context;
+        setItems(markers);
+    }
 
     class MarkerViewHolder extends RecyclerView.ViewHolder{
-        private ImageView markerIcon;
-        private TextView markerDescription;
+        private View rootView;
 
         public MarkerViewHolder(View view){
             super(view);
+            rootView = view;
 
+            final TextView textView = rootView.findViewById(R.id.marker_description);
+            if(textView != null){
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO
+                    }
+                });
+            }
+        }
+
+        public  void setChanges(Marker marker){
+            final TextView markerDescription = rootView.findViewById(R.id.marker_description);
+            setText(markerDescription, marker.getDescription());
+
+            final ImageView markerIcon = rootView.findViewById(R.id.marker_icon);
+            if(marker.getIcon() != null){
+                setIcon(markerIcon, marker.getIcon());
+            }
+        }
+
+        private void setText(TextView target, String text){
+            if(target != null){
+                target.setText(text);
+            }
+        }
+
+        private void setIcon(ImageView target, Bitmap icon) {
+            if(target != null){
+                target.setImageBitmap(icon);
+            }
+        }
+
+        public void clearAnimation(){
+            rootView.clearAnimation();
         }
     }
 
     @NonNull
     @Override
     public MarkerAdapter.MarkerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.marker_item_view, parent, false);
+        return new MarkerViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MarkerAdapter.MarkerViewHolder holder, int position) {
-
+        if(markerList.size() > position){
+            holder.setChanges(markerList.get(position));
+        }
+        setAnimation(holder.rootView, position);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return markerList.size();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull MarkerViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.clearAnimation();
+    }
+
+    private void setAnimation(View viewToAnimate, int position){
+        if(position > lastPosition){
+            final Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 }
