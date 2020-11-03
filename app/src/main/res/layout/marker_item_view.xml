@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".MainFragment">
 
-    <ImageView
-        android:id="@+id/marker_icon"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher_round"
-        android:paddingBottom="15dp"
-        />
-
-    <TextView
-        android:gravity="center"
-        android:id="@+id/marker_description"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/default_description"
-        />
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/marker_icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="5dp"/>
+
+        <TextView
+            android:id="@+id/marker_link"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:layout_toEndOf="@+id/marker_icon"
+            android:text="@string/default_link"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/marker_description"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="17sp"
+            android:layout_below="@id/marker_link"
+            android:layout_toEndOf="@id/marker_icon"
+            android:text="@string/default_description" />
+    </RelativeLayout>
 
 </LinearLayout>

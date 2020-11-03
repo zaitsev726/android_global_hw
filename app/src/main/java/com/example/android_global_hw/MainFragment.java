@@ -61,6 +61,9 @@ public class MainFragment extends Fragment{
         RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
         RecyclerView recyclerView = view.findViewById(R.id.marker_list);
         MarkerAdapter markerAdapter = new MarkerAdapter(view.getContext(),markerList);
+        if(listener != null) {
+            markerAdapter.setOnClickListener(listener);
+        }
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(markerAdapter);
         super.onViewCreated(view, savedInstanceState);

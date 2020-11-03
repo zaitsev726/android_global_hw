@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 public class Marker {
     private Bitmap icon;
     private String description;
-    private String marker;
+    private String link;
 
-    public Marker(String marker, String description, Bitmap bitmap){
+    public Marker(String link, String description, Bitmap bitmap){
         this.icon = bitmap;
         this.description = description;
-        this.marker = marker;
+        this.link = link;
     }
 
     public void setIcon(Bitmap icon) {
@@ -21,8 +21,8 @@ public class Marker {
         this.description = description;
     }
 
-    public void setMarker(String marker) {
-        this.marker = marker;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public Bitmap getIcon() {
@@ -33,7 +33,8 @@ public class Marker {
         return description;
     }
 
-    public String getMarker() {
-        return marker;
+
+    public String getLink() {
+        return link;
     }
 }
