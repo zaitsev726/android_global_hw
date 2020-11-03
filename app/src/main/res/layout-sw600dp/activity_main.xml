@@ -15,7 +15,7 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/detailed_info"
         android:layout_weight="3"
         android:layout_width="0dp"
         android:orientation="horizontal"
