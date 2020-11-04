@@ -4,14 +4,16 @@ import android.graphics.Bitmap;
 
 public class Marker {
     private Bitmap icon;
-    private String description;
     private String link;
-
+    private String header;
+    private String description;
     public Marker(String link, String description, Bitmap bitmap){
         this.icon = bitmap;
         this.description = description;
         this.link = link;
     }
+
+    public void setHeader(String header){this.header = header;}
 
     public void setIcon(Bitmap icon) {
         this.icon = icon;
@@ -33,8 +35,9 @@ public class Marker {
         return description;
     }
 
-
     public String getLink() {
         return link;
     }
+
+    public String getHeader(){return header;}
 }

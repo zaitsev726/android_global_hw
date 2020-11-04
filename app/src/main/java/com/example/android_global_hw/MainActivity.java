@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
 
     @Override
     public void onMarkerHolderClick(Marker marker) {
-        View container = findViewById(R.id.detailed_info);
+      /*  View container = findViewById(R.id.detailed_info);
         if(container != null){
             if(markerFragment == null) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -44,6 +44,6 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
                 ft.commit();
             }
             markerFragment.updateMarker(marker);
-        }
+        }*/
     }
 }
