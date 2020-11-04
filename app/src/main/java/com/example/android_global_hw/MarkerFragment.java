@@ -17,8 +17,13 @@ public class MarkerFragment extends Fragment {
     private Marker marker;
     private ImageView detMarkerIcon;
     private EditText detMarkerLink;
+    private EditText detMarkerHeader;
     private EditText detMarkerDescription;
+
     private Button startButton;
+    private Button closeButton;
+    private Button deleteButton;
+
     private boolean isCreated = false;
 
     public MarkerFragment() {
@@ -59,8 +64,12 @@ public class MarkerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         detMarkerIcon = view.findViewById(R.id.det_marker_icon);
         detMarkerLink = view.findViewById(R.id.det_marker_link);
+        detMarkerHeader = view.findViewById(R.id.det_marker_header);
         detMarkerDescription = view.findViewById(R.id.det_marker_description);
         startButton = view.findViewById(R.id.start_button);
+        closeButton = view.findViewById(R.id.close_button);
+        deleteButton = view.findViewById(R.id.delete_button);
+
         isCreated = true;
         if(marker!= null){
             if (marker.getIcon() != null)

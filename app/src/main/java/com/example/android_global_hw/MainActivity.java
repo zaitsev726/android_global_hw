@@ -27,23 +27,19 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fragment, MainFragment.newInstance())
-                //.addToBackStack(null)
+                // .addToBackStack(null)
                 .commit();
     }
 
     @Override
     public void onMarkerHolderClick(Marker marker) {
-      /*  View container = findViewById(R.id.detailed_info);
-        if(container != null){
-            if(markerFragment == null) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                markerFragment = MarkerFragment.newInstance();
-                ft.replace(R.id.detailed_info, markerFragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-            markerFragment.updateMarker(marker);
-        }*/
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        markerFragment = MarkerFragment.newInstance();
+        ft.replace(R.id.main_fragment, markerFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.addToBackStack(null);
+        ft.commit();
+        markerFragment.updateMarker(marker);
     }
 }
