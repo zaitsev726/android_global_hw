@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import java.util.Objects;
 
 public class Marker {
+    private int markerID;
     private Bitmap icon;
     private String link;
     private String header;
@@ -29,6 +30,8 @@ public class Marker {
         this.link = link;
     }
 
+    public void setMarkerID(int id){markerID = id;}
+
     public Bitmap getIcon() {
         return icon;
     }
@@ -42,6 +45,8 @@ public class Marker {
     }
 
     public String getHeader(){return header;}
+
+    public int getMarkerID(){return markerID;}
 
     @Override
     public boolean equals(Object o) {

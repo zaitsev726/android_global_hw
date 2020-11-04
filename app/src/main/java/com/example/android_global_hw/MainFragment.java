@@ -66,14 +66,17 @@ public class MainFragment extends Fragment {
             Cursor cursor = database.query(DBHelper.TABLE_MARKER, null, null, null, null, null, null);
             if (cursor.moveToFirst()) {
                 markerList = new ArrayList<>();
+                int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
                 int linkIndex = cursor.getColumnIndex(DBHelper.KEY_LINK);
                 int headerIndex = cursor.getColumnIndex(DBHelper.KEY_HEADER);
                 do {
                     Marker marker = new Marker(cursor.getString(linkIndex), cursor.getString(headerIndex), null);
-                    if(!markerList.contains(marker))
+                    marker.setMarkerID(cursor.getInt(idIndex));
+                    if (!markerList.contains(marker))
                         markerList.add(marker);
                 } while (cursor.moveToNext());
             }
+            cursor.close();
         }
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
