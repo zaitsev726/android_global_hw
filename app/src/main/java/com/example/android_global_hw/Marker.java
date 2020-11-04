@@ -2,6 +2,8 @@ package com.example.android_global_hw;
 
 import android.graphics.Bitmap;
 
+import java.util.Objects;
+
 public class Marker {
     private Bitmap icon;
     private String link;
@@ -40,4 +42,20 @@ public class Marker {
     }
 
     public String getHeader(){return header;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Marker marker = (Marker) o;
+        return Objects.equals(icon, marker.icon) &&
+                Objects.equals(link, marker.link) &&
+                Objects.equals(header, marker.header) &&
+                Objects.equals(description, marker.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(icon, link, header, description);
+    }
 }

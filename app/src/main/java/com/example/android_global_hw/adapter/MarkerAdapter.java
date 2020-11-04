@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_global_hw.DBHelper;
 import com.example.android_global_hw.Marker;
 import com.example.android_global_hw.R;
 
@@ -27,6 +28,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
 
     public interface onClickListener {
         void onMarkerHolderClick(Marker marker);
+        DBHelper getDataBaseMarker();
     }
 
     private onClickListener listener;
