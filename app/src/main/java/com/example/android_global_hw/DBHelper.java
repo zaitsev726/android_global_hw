@@ -1,5 +1,6 @@
 package com.example.android_global_hw;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -27,12 +28,52 @@ public class DBHelper extends SQLiteOpenHelper {
                 KEY_ID + " integer primary key," +
                 KEY_LINK + " text," +
                 KEY_HEADER + " text" + ")");
+        initializeDataBase(db);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + TABLE_MARKER );
-
+        db.execSQL("drop table if exists " + TABLE_MARKER);
         onCreate(db);
+
+    }
+
+    public void updateTable(int markerId, String typeOfEditText, String newText) {
+        System.out.println(markerId + " ID IS");
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(typeOfEditText, newText);
+        int update = getWritableDatabase().update(DBHelper.TABLE_MARKER, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(markerId)});
+        System.out.println("UPDATED " + update);
+    }
+
+
+    private void initializeDataBase(SQLiteDatabase db) {
+        //Thread thread = new Thread(new Runnable() {
+        //    @Override
+        //  public void run() {
+        //SQLiteDatabase database = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.KEY_LINK, "www.google.com");
+        contentValues.put(DBHelper.KEY_HEADER, "it's google!");
+        db.insert(DBHelper.TABLE_MARKER, null, contentValues);
+
+        contentValues.clear();
+        contentValues.put(DBHelper.KEY_LINK, "www.yandex.ru");
+        contentValues.put(DBHelper.KEY_HEADER, "it's yandex!");
+        db.insert(DBHelper.TABLE_MARKER, null, contentValues);
+
+        contentValues.clear();
+        contentValues.put(DBHelper.KEY_LINK, "www.google.com");
+        contentValues.put(DBHelper.KEY_HEADER, "it's second google!");
+        db.insert(DBHelper.TABLE_MARKER, null, contentValues);
+
+        contentValues.clear();
+        contentValues.put(DBHelper.KEY_LINK, "www.youtube.com");
+        contentValues.put(DBHelper.KEY_HEADER, "it's youtube!!");
+        db.insert(DBHelper.TABLE_MARKER, null, contentValues);
+        //}
+        //});
+        // thread.start();
     }
 }

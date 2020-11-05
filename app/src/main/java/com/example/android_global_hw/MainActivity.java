@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
 
-public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, DetailMarkerFragment.itemClickListener {
-    //private DetailMarkerFragment detailMarkerFragment;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
+    private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
     private SQLiteDatabase database;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
         setContentView(R.layout.activity_main);
 
         dbHelper = new DBHelper(this);
-        initializeDataBase();
+       // initializeDataBase();
     }
 
     private void initializeDataBase() {
@@ -58,13 +58,14 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     protected void onStart() {
         super.onStart();
         addFragment();
-        database = dbHelper.getWritableDatabase();
+      //  database = dbHelper.getWritableDatabase();
     }
 
     private void addFragment() {
+        markerListFragment = MarkerListFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.main_fragment, MainFragment.newInstance())
+                .add(R.id.main_fragment, markerListFragment)
                 // .addToBackStack(null)
                 .commit();
     }
@@ -73,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     public void onMarkerHolderClick(Marker marker) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        DetailMarkerFragment detailMarkerFragment = DetailMarkerFragment.newInstance();
-        ft.replace(R.id.main_fragment, detailMarkerFragment);
+        MarkerInfoFragment markerInfoFragment = MarkerInfoFragment.newInstance();
+        ft.replace(R.id.main_fragment, markerInfoFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.addToBackStack(null);
         ft.commit();
-        detailMarkerFragment.updateMarker(marker);
+        markerInfoFragment.updateMarker(marker);
     }
 
     @Override
@@ -91,17 +92,19 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
        /* Cursor cursor = database.rawQuery("select * from " + DBHelper.TABLE_MARKER + " where " +
                 DBHelper.KEY_ID + "=?", new String[markerId]);
         cursor.moveToFirst();*/
-        ContentValues contentValues = new ContentValues();
+      /*  ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.KEY_ID, markerId);
         contentValues.put(typeOfEditText, newText);
-        database.update(DBHelper.TABLE_MARKER, contentValues, DBHelper.KEY_ID + "=?", new String[]{String.valueOf(markerId)});
-
+        database.update(DBHelper.TABLE_MARKER, contentValues, DBHelper.KEY_ID + "=?", new String[]{String.valueOf(markerId)});*/
+        dbHelper.updateTable(markerId,typeOfEditText,newText);
+        //TODO remove this function
+        markerListFragment.updateMarkerList(markerId,typeOfEditText,newText);
      //   cursor.close();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        database.close();
+        dbHelper.close();
     }
 }

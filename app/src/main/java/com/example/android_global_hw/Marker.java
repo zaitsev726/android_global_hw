@@ -63,4 +63,15 @@ public class Marker {
     public int hashCode() {
         return Objects.hash(icon, link, header, description);
     }
+
+    public void updateField(String typeOfEditText, String newText) {
+        switch (typeOfEditText){
+            case DBHelper.KEY_LINK:
+                this.link = newText;
+                break;
+            case DBHelper.KEY_HEADER:
+                this.header = newText;
+                break;
+        }
+    }
 }

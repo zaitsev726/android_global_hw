@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,13 +18,15 @@ import android.view.ViewGroup;
 import com.example.android_global_hw.adapter.MarkerAdapter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class MainFragment extends Fragment {
+public class MarkerListFragment extends Fragment {
     private List<Marker> markerList;
+    private MarkerAdapter adapter;
     private MarkerAdapter.onClickListener listener;
 
-    public MainFragment() {
+    public MarkerListFragment() {
         // Required empty public constructor
     }
 
@@ -43,9 +44,9 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public static MainFragment newInstance() {
+    public static MarkerListFragment newInstance() {
         Bundle args = new Bundle();
-        MainFragment fragment = new MainFragment();
+        MarkerListFragment fragment = new MarkerListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,12 +55,11 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_marker_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //  initData();
 
         if (listener.getDataBaseMarker() != null) {
             SQLiteDatabase database = listener.getDataBaseMarker().getReadableDatabase();
@@ -76,25 +76,45 @@ public class MainFragment extends Fragment {
                         markerList.add(marker);
                 } while (cursor.moveToNext());
             }
+            System.out.println("SIZE IS " + markerList.size());
             cursor.close();
         }
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
         RecyclerView recyclerView = view.findViewById(R.id.marker_list);
-        MarkerAdapter markerAdapter = new MarkerAdapter(view.getContext(), markerList);
+        adapter = new MarkerAdapter(view.getContext(), markerList);
         if (listener != null) {
-            markerAdapter.setOnClickListener(listener);
+            adapter.setOnClickListener(listener);
         }
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(markerAdapter);
+        recyclerView.setAdapter(adapter);
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void initData() {
-        markerList = new ArrayList<>();
-        markerList.add(new Marker("google.com", "it's google", null));
-        markerList.add(new Marker("yandex.com", "it's yandex", null));
-        markerList.add(new Marker("yahooo.com", "it's yahooo", null));
-        markerList.add(new Marker("youtube.com", "it's youtube", null));
+    public void updateMarkerList(int markerId, String typeOfEditText, String newText) {
+        adapter.clearItems();
+        Marker marker2Update = deleteItem(markerId);
+        marker2Update.updateField(typeOfEditText, newText);
+        insertNewElement(marker2Update);
+    }
+
+    public Marker deleteItem(int markerId){
+        Iterator<Marker> iterator = markerList.iterator();
+        while (iterator.hasNext()){
+            Marker next = iterator.next();
+            if(next.getMarkerID() == markerId){
+                System.out.println(markerList.size());
+                iterator.remove();
+                System.out.println("Marker removed");
+                System.out.println(markerList.size());
+                return next;
+            }
+        }
+        throw new NullPointerException();
+    }
+
+    public void insertNewElement(Marker marker){
+        markerList.add(marker);
+        adapter.setItems(markerList);
     }
 }

@@ -16,9 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.List;
 import java.util.Objects;
 
-public class DetailMarkerFragment extends Fragment {
+public class MarkerInfoFragment extends Fragment {
 
     interface itemClickListener {
         void itemClicked(int markerId, String typeOfEditText, String newText);
@@ -38,7 +39,7 @@ public class DetailMarkerFragment extends Fragment {
 
     private boolean isCreated = false;
 
-    public DetailMarkerFragment() {
+    public MarkerInfoFragment() {
         // Required empty public constructor
     }
 
@@ -62,8 +63,8 @@ public class DetailMarkerFragment extends Fragment {
 
     }
 
-    public static DetailMarkerFragment newInstance() {
-        DetailMarkerFragment fragment = new DetailMarkerFragment();
+    public static MarkerInfoFragment newInstance() {
+        MarkerInfoFragment fragment = new MarkerInfoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -78,7 +79,7 @@ public class DetailMarkerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail_marker, container, false);
+        return inflater.inflate(R.layout.fragment_marker_info, container, false);
     }
 
     @Override
