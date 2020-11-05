@@ -76,7 +76,6 @@ public class MarkerListFragment extends Fragment {
                         markerList.add(marker);
                 } while (cursor.moveToNext());
             }
-            System.out.println("SIZE IS " + markerList.size());
             cursor.close();
         }
 
@@ -98,22 +97,19 @@ public class MarkerListFragment extends Fragment {
         insertNewElement(marker2Update);
     }
 
-    public Marker deleteItem(int markerId){
+    public Marker deleteItem(int markerId) {
         Iterator<Marker> iterator = markerList.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Marker next = iterator.next();
-            if(next.getMarkerID() == markerId){
-                System.out.println(markerList.size());
+            if (next.getMarkerID() == markerId) {
                 iterator.remove();
-                System.out.println("Marker removed");
-                System.out.println(markerList.size());
                 return next;
             }
         }
         throw new NullPointerException();
     }
 
-    public void insertNewElement(Marker marker){
+    public void insertNewElement(Marker marker) {
         markerList.add(marker);
         adapter.setItems(markerList);
     }

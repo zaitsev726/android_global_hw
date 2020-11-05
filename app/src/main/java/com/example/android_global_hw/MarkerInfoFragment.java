@@ -33,6 +33,7 @@ public class MarkerInfoFragment extends Fragment {
     private EditText detMarkerHeader;
     private EditText detMarkerDescription;
 
+    //TODO add functional to buttons
     private Button startButton;
     private Button closeButton;
     private Button deleteButton;
@@ -103,6 +104,7 @@ public class MarkerInfoFragment extends Fragment {
 
         setEditTextListeners(detMarkerLink);
         setEditTextListeners(detMarkerHeader);
+        setEditTextListeners(detMarkerDescription);
     }
 
     private void setEditTextListeners(@NonNull final EditText editText) {
@@ -116,6 +118,8 @@ public class MarkerInfoFragment extends Fragment {
                         listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
                     } else if (editText.getId() == R.id.det_marker_header) {
                         listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, newText);
+                    } else if (editText.getId() == R.id.det_marker_description) {
+                        listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
                     } else
                         throw new NullPointerException();
 

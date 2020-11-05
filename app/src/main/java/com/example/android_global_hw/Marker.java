@@ -10,6 +10,8 @@ public class Marker {
     private String link;
     private String header;
     private String description;
+
+    //TODO refactor constructor
     public Marker(String link, String description, Bitmap bitmap){
         this.icon = bitmap;
         this.description = description;
