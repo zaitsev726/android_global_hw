@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
-    private List<Marker> markerList = new ArrayList<>();
+    private final List<Marker> markerList = new ArrayList<>();
     private int lastPosition = -1;
     private final Context context;
 

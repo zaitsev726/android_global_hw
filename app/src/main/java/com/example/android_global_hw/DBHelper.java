@@ -16,6 +16,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String KEY_ID = "_id";
     public static final String KEY_LINK = "link";
     public static final String KEY_HEADER = "header";
+    public static final String KEY_DESCRIPTION = "description";
+    //TODO add bitmap
 
 
     public DBHelper(@Nullable Context context) {
@@ -27,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TABLE_MARKER + "(" +
                 KEY_ID + " integer primary key," +
                 KEY_LINK + " text," +
-                KEY_HEADER + " text" + ")");
+                KEY_HEADER + " text," +
+                KEY_DESCRIPTION + "text" + ")");
         initializeDataBase(db);
 
     }
@@ -49,10 +52,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private void initializeDataBase(SQLiteDatabase db) {
-        //Thread thread = new Thread(new Runnable() {
-        //    @Override
-        //  public void run() {
-        //SQLiteDatabase database = getWritableDatabase();
+        //TODO add description
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.KEY_LINK, "www.google.com");
         contentValues.put(DBHelper.KEY_HEADER, "it's google!");
@@ -72,8 +72,5 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(DBHelper.KEY_LINK, "www.youtube.com");
         contentValues.put(DBHelper.KEY_HEADER, "it's youtube!!");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
-        //}
-        //});
-        // thread.start();
     }
 }

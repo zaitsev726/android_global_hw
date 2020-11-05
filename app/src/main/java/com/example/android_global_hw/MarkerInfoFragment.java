@@ -1,6 +1,8 @@
 package com.example.android_global_hw;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.util.List;
 import java.util.Objects;
 
 public class MarkerInfoFragment extends Fragment {
@@ -33,6 +34,7 @@ public class MarkerInfoFragment extends Fragment {
     private EditText detMarkerHeader;
     private EditText detMarkerDescription;
 
+    //TODO add functional to buttons
     private Button startButton;
     private Button closeButton;
     private Button deleteButton;
@@ -103,6 +105,8 @@ public class MarkerInfoFragment extends Fragment {
 
         setEditTextListeners(detMarkerLink);
         setEditTextListeners(detMarkerHeader);
+        setEditTextListeners(detMarkerDescription);
+        setStartLinkListener(startButton);
     }
 
     private void setEditTextListeners(@NonNull final EditText editText) {
@@ -116,6 +120,8 @@ public class MarkerInfoFragment extends Fragment {
                         listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
                     } else if (editText.getId() == R.id.det_marker_header) {
                         listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, newText);
+                    } else if (editText.getId() == R.id.det_marker_description) {
+                        listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
                     } else
                         throw new NullPointerException();
 
@@ -129,6 +135,21 @@ public class MarkerInfoFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    private void setStartLinkListener(@NonNull final Button startButton) {
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (marker != null) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                    browserIntent.setData(Uri.parse("http://" + marker.getLink()));
+                    String title = (String) getResources().getText(R.string.chooser_title);
+                    Intent chooser = Intent.createChooser(browserIntent, title);
+                    startActivity(chooser);
+                }
             }
         });
     }

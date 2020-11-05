@@ -9,4 +9,5 @@
     <string name="enter_description">Enter your description</string>
     <string name="close">CLOSE MARKER</string>
     <string name="delete">DELETE MARKER</string>
+    <string name="chooser_title">Choose Browser</string>
 </resources>
