@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 KEY_ID + " integer primary key," +
                 KEY_LINK + " text," +
                 KEY_HEADER + " text," +
-                KEY_DESCRIPTION + "text" + ")");
+                KEY_DESCRIPTION + " text" + ")");
         initializeDataBase(db);
 
     }
@@ -56,21 +56,25 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.KEY_LINK, "www.google.com");
         contentValues.put(DBHelper.KEY_HEADER, "it's google!");
+        contentValues.put(DBHelper.KEY_DESCRIPTION, "1");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
 
         contentValues.clear();
         contentValues.put(DBHelper.KEY_LINK, "www.yandex.ru");
         contentValues.put(DBHelper.KEY_HEADER, "it's yandex!");
+        contentValues.put(DBHelper.KEY_DESCRIPTION, "2");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
 
         contentValues.clear();
         contentValues.put(DBHelper.KEY_LINK, "www.google.com");
         contentValues.put(DBHelper.KEY_HEADER, "it's second google!");
+        contentValues.put(DBHelper.KEY_DESCRIPTION, "3");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
 
         contentValues.clear();
         contentValues.put(DBHelper.KEY_LINK, "www.youtube.com");
         contentValues.put(DBHelper.KEY_HEADER, "it's youtube!!");
+        contentValues.put(DBHelper.KEY_DESCRIPTION, "4");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
     }
 }

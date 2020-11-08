@@ -63,8 +63,8 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         public void setChanges(Marker marker) {
             final TextView markerLink = rootView.findViewById(R.id.marker_link);
             setText(markerLink, marker.getLink());
-            final TextView markerDescription = rootView.findViewById(R.id.marker_description);
-            setText(markerDescription, marker.getDescription());
+            final TextView markerHeader = rootView.findViewById(R.id.marker_header);
+            setText(markerHeader, marker.getHeader());
 
             final ImageView markerIcon = rootView.findViewById(R.id.marker_icon);
             if (marker.getIcon() != null) {

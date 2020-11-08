@@ -27,8 +27,7 @@ public class MarkerInfoFragment extends Fragment {
     }
 
     private itemClickListener listener;
-    private Marker marker;
-
+    private static Marker marker;
     private ImageView detMarkerIcon;
     private EditText detMarkerLink;
     private EditText detMarkerHeader;
@@ -100,6 +99,7 @@ public class MarkerInfoFragment extends Fragment {
             if (marker.getIcon() != null)
                 detMarkerIcon.setImageBitmap(marker.getIcon());
             detMarkerLink.setText(marker.getLink());
+            detMarkerHeader.setText(marker.getHeader());
             detMarkerDescription.setText(marker.getDescription());
         }
 
@@ -108,6 +108,7 @@ public class MarkerInfoFragment extends Fragment {
         setEditTextListeners(detMarkerDescription);
         setStartLinkListener(startButton);
     }
+
 
     private void setEditTextListeners(@NonNull final EditText editText) {
         editText.setOnKeyListener(new View.OnKeyListener() {
@@ -145,7 +146,10 @@ public class MarkerInfoFragment extends Fragment {
             public void onClick(View v) {
                 if (marker != null) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW);
-                    browserIntent.setData(Uri.parse("http://" + marker.getLink()));
+                    if (!marker.getLink().contains("https://") && !marker.getLink().contains("http://"))
+                        browserIntent.setData(Uri.parse("https://" + marker.getLink()));
+                    else
+                        browserIntent.setData(Uri.parse(marker.getLink()));
                     String title = (String) getResources().getText(R.string.chooser_title);
                     Intent chooser = Intent.createChooser(browserIntent, title);
                     startActivity(chooser);

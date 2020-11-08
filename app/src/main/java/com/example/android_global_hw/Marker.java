@@ -11,11 +11,18 @@ public class Marker {
     private String header;
     private String description;
 
-    //TODO refactor constructor
-    public Marker(String link, String description, Bitmap bitmap){
+    public Marker(int ID, String link, String header, String description, Bitmap bitmap){
+        this.markerID = ID;
         this.icon = bitmap;
-        this.description = description;
         this.link = link;
+        this.header = header;
+        this.description = description;
+    }
+
+    public Marker(String link, String header, String description){
+        this.link = link;
+        this.header = header;
+        this.description = description;
     }
 
     public void setHeader(String header){this.header = header;}

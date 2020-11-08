@@ -10,4 +10,5 @@
     <string name="close">CLOSE MARKER</string>
     <string name="delete">DELETE MARKER</string>
     <string name="chooser_title">Choose Browser</string>
+    <string name="default_header">None header</string>
 </resources>

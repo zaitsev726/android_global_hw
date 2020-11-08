@@ -69,9 +69,14 @@ public class MarkerListFragment extends Fragment {
                 int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
                 int linkIndex = cursor.getColumnIndex(DBHelper.KEY_LINK);
                 int headerIndex = cursor.getColumnIndex(DBHelper.KEY_HEADER);
+                int descriptionIndex = cursor.getColumnIndex(DBHelper.KEY_DESCRIPTION);
                 do {
-                    Marker marker = new Marker(cursor.getString(linkIndex), cursor.getString(headerIndex), null);
-                    marker.setMarkerID(cursor.getInt(idIndex));
+                    //TODO save bitmap
+                    Marker marker = new Marker(cursor.getInt(idIndex),
+                            cursor.getString(linkIndex),
+                            cursor.getString(headerIndex),
+                            cursor.getString(descriptionIndex),
+                            null);
                     if (!markerList.contains(marker))
                         markerList.add(marker);
                 } while (cursor.moveToNext());

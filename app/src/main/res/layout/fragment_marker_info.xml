@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    tools:context=".MarkerInfoFragment">
+    tools:context=".MarkerInfoFragment"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
 
     <ImageView

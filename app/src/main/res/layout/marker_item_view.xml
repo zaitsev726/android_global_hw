@@ -22,14 +22,14 @@
             android:layout_marginEnd="5dp"/>
 
         <TextView
-            android:id="@+id/marker_description"
+            android:id="@+id/marker_header"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="start"
             android:layout_toEndOf="@+id/marker_icon"
-            android:text="@string/default_description"
+            android:text="@string/default_header"
             android:layout_marginBottom="5dp"/>
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="30dp"
             android:textSize="17sp"
             android:maxLines="1"
-            android:layout_below="@id/marker_description"
+            android:layout_below="@id/marker_header"
             android:layout_toEndOf="@id/marker_icon"
 
             android:text="@string/default_link" />

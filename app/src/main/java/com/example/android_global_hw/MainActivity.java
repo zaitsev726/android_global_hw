@@ -1,5 +1,6 @@
 package com.example.android_global_hw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,18 +15,27 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
   //  private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
-
+    private String SAVED_STATE = "INSTANCE_SAVED";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this);
+        if(savedInstanceState == null)
+            addFragment();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        addFragment();
+        //addFragment();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putByte(SAVED_STATE, (byte) 1);
     }
 
     private void addFragment() {
