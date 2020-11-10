@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
@@ -15,19 +16,18 @@ import com.example.android_global_hw.adapter.MarkerAdapter;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
-  //  private MarkerListFragment markerListFragment;
+    //  private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
     private String SAVED_STATE = "INSTANCE_SAVED";
-    private Toolbar supportActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar mActionBarToolBar = findViewById(R.id.toolbar_actionbar);
+        Toolbar mActionBarToolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mActionBarToolBar);
         dbHelper = new DBHelper(this);
-        if(savedInstanceState == null)
+        if (savedInstanceState == null)
             addFragment();
     }
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     }
 
     private void addFragment() {
-       // markerListFragment = MarkerListFragment.newInstance();
+        // markerListFragment = MarkerListFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fragment, MarkerListFragment.newInstance())
