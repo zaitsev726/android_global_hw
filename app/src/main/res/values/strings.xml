@@ -11,4 +11,6 @@
     <string name="delete">DELETE MARKER</string>
     <string name="chooser_title">Choose Browser</string>
     <string name="default_header">None header</string>
+    <string name="edit">Edit</string>
+    <string name="sort_ab">Sort</string>
 </resources>

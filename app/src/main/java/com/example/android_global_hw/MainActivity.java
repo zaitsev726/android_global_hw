@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
 
@@ -16,10 +18,14 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
   //  private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
     private String SAVED_STATE = "INSTANCE_SAVED";
+    private Toolbar supportActionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar mActionBarToolBar = findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mActionBarToolBar);
         dbHelper = new DBHelper(this);
         if(savedInstanceState == null)
             addFragment();
@@ -36,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putByte(SAVED_STATE, (byte) 1);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        return true;
     }
 
     private void addFragment() {
@@ -74,4 +86,6 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
         super.onDestroy();
         dbHelper.close();
     }
+
+
 }

@@ -6,8 +6,6 @@
     android:orientation="vertical"
     tools:context=".MarkerListFragment">
 
-    <include layout="@layout/toolbar" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/marker_list"
         android:padding="15dp"
