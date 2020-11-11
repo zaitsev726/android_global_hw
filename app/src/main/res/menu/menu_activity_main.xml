@@ -12,11 +12,11 @@
         android:id="@+id/action_edit"
         android:icon="@drawable/icon_toolbar_edit"
         android:title="@string/edit"
-        yourapp:showAsAction="always" />
+        yourapp:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sort"
-        android:icon="@drawable/icon_toolbal_sort"
+        android:icon="@drawable/icon_toolbar_sort"
         android:title="@string/sort_ab"
         yourapp:showAsAction="always" />
 </menu>

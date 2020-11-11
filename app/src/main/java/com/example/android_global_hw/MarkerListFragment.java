@@ -25,6 +25,11 @@ public class MarkerListFragment extends Fragment {
     private List<Marker> markerList;
     private MarkerAdapter adapter;
     private MarkerAdapter.onClickListener listener;
+    private static AlphabetMode orderMode;
+
+    private enum AlphabetMode {
+        AtoZ, ZtoA, Normal;
+    }
 
     public MarkerListFragment() {
         // Required empty public constructor
@@ -32,8 +37,8 @@ public class MarkerListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        orderMode = AlphabetMode.AtoZ;
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -81,6 +86,7 @@ public class MarkerListFragment extends Fragment {
                         markerList.add(marker);
                 } while (cursor.moveToNext());
             }
+
             cursor.close();
         }
 
@@ -97,9 +103,9 @@ public class MarkerListFragment extends Fragment {
 
     public void updateMarkerList(int markerId, String typeOfEditText, String newText) {
         adapter.clearItems();
-        Marker marker2Update = deleteItem(markerId);
-        marker2Update.updateField(typeOfEditText, newText);
-        insertNewElement(marker2Update);
+       // Marker marker2Update = deleteItem(markerId);
+       // marker2Update.updateField(typeOfEditText, newText);
+       // insertNewElement(marker2Update);
     }
 
     public Marker deleteItem(int markerId) {
@@ -117,5 +123,19 @@ public class MarkerListFragment extends Fragment {
     public void insertNewElement(Marker marker) {
         markerList.add(marker);
         adapter.setItems(markerList);
+    }
+
+    public void orderByAlphabet() {
+        if(orderMode.equals(AlphabetMode.AtoZ)){
+            adapter.orderByAtoZMode(new ArrayList<>(markerList));
+            orderMode = AlphabetMode.ZtoA;
+        }else if(orderMode.equals(AlphabetMode.ZtoA)){
+            adapter.orderByZtoAMode(new ArrayList<>(markerList));
+            orderMode = AlphabetMode.Normal;
+        }else if(orderMode.equals(AlphabetMode.Normal)){
+            adapter.setItems(new ArrayList<>(markerList));
+            orderMode = AlphabetMode.AtoZ;
+        }
+
     }
 }

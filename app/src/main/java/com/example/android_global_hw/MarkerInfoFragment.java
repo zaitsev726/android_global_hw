@@ -23,7 +23,7 @@ import java.util.Objects;
 public class MarkerInfoFragment extends Fragment {
 
     interface itemClickListener {
-        void itemClicked(int markerId, String typeOfEditText, String newText);
+        void markerItemClicked(int markerId, String typeOfEditText, String newText);
     }
 
     private itemClickListener listener;
@@ -54,7 +54,7 @@ public class MarkerInfoFragment extends Fragment {
     }
 
     public void updateMarker(Marker marker) {
-        this.marker = marker;
+        MarkerInfoFragment.marker = marker;
         if (isCreated) {
             if (marker.getIcon() != null)
                 detMarkerIcon.setImageBitmap(marker.getIcon());
@@ -118,11 +118,11 @@ public class MarkerInfoFragment extends Fragment {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     String newText = editText.getText().toString();
                     if (editText.getId() == R.id.det_marker_link) {
-                        listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
+                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
                     } else if (editText.getId() == R.id.det_marker_header) {
-                        listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, newText);
+                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, newText);
                     } else if (editText.getId() == R.id.det_marker_description) {
-                        listener.itemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
+                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
                     } else
                         throw new NullPointerException();
 

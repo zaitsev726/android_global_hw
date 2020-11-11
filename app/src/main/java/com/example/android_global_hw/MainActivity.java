@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,9 +17,12 @@ import com.example.android_global_hw.adapter.MarkerAdapter;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
-    //  private MarkerListFragment markerListFragment;
+    private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
     private String SAVED_STATE = "INSTANCE_SAVED";
+
+    private MenuItem searchMenuItem;
+    private MenuItem sortAbMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     protected void onStart() {
         super.onStart();
         //addFragment();
-
     }
 
     @Override
@@ -47,14 +50,27 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
+        searchMenuItem = menu.findItem(R.id.action_search);
+        sortAbMenuItem = menu.findItem(R.id.action_sort);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.equals(searchMenuItem)){
+
+        }else if(item.equals(sortAbMenuItem)){
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            markerListFragment.orderByAlphabet();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void addFragment() {
-        // markerListFragment = MarkerListFragment.newInstance();
+        markerListFragment = MarkerListFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.main_fragment, MarkerListFragment.newInstance())
+                .add(R.id.main_fragment, markerListFragment)
                 // .addToBackStack(null)
                 .commit();
     }
@@ -77,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     }
 
     @Override
-    public void itemClicked(int markerId, String typeOfEditText, String newText) {
+    public void markerItemClicked(int markerId, String typeOfEditText, String newText) {
         dbHelper.updateTable(markerId, typeOfEditText, newText);
     }
 

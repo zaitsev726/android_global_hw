@@ -19,25 +19,28 @@ import com.example.android_global_hw.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
-    private final List<Marker> markerList = new ArrayList<>();
+    private List<Marker> markerList = new ArrayList<>();
     private int lastPosition = -1;
     private final Context context;
 
     public interface onClickListener {
+
         void onMarkerHolderClick(Marker marker);
+
         DBHelper getDataBaseMarker();
     }
-
     private onClickListener listener;
-
     public void setOnClickListener(onClickListener listener) {
         this.listener = listener;
     }
 
     public void setItems(Collection<Marker> markers) {
+        markerList.clear();
         markerList.addAll(markers);
         notifyDataSetChanged();
     }
@@ -47,12 +50,38 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         notifyDataSetChanged();
     }
 
+    public void orderByAtoZMode(List<Marker> markerList) {
+        Collections.sort(markerList, new Comparator<Marker>() {
+            @Override
+            public int compare(Marker o1, Marker o2) {
+                return o1.getHeader().compareTo(o2.getHeader());
+            }
+        });
+        this.markerList = markerList;
+        notifyDataSetChanged();
+    }
+
+    public void orderByZtoAMode(List<Marker> markerList) {
+        Collections.sort(markerList, new Comparator<Marker>() {
+            @Override
+            public int compare(Marker o1, Marker o2) {
+                int result = o1.getHeader().compareTo(o2.getHeader());
+                if(result != 0){
+                    return -result;
+                }
+                return result;
+            }
+        });
+        this.markerList = markerList;
+        notifyDataSetChanged();
+    }
+
     public MarkerAdapter(Context context, List<Marker> markers) {
         this.context = context;
         setItems(markers);
     }
-
     class MarkerViewHolder extends RecyclerView.ViewHolder {
+
         private final View rootView;
 
         public MarkerViewHolder(View view) {
