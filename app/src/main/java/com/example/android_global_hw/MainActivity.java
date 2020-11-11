@@ -23,6 +23,13 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
 
     private MenuItem searchMenuItem;
     private MenuItem sortAbMenuItem;
+    private MenuItem removeMenuItem;
+
+    private static ApplicationMode mode;
+
+    private enum ApplicationMode {
+        NORMAL, REMOVE, SEARCH, SORT;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +59,32 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         searchMenuItem = menu.findItem(R.id.action_search);
         sortAbMenuItem = menu.findItem(R.id.action_sort);
+        removeMenuItem = menu.findItem(R.id.action_remove);
+        if(mode == null)
+            mode = ApplicationMode.NORMAL;
+        startSpecificApplicationMode();
         return true;
+    }
+
+    private void startSpecificApplicationMode() {
+
+        if (mode.equals(ApplicationMode.NORMAL)) {
+            searchMenuItem.setVisible(true);
+            sortAbMenuItem.setVisible(true);
+            removeMenuItem.setVisible(false);
+        } else if (mode.equals(ApplicationMode.REMOVE)) {
+            searchMenuItem.setVisible(false);
+            sortAbMenuItem.setVisible(false);
+            removeMenuItem.setVisible(true);
+        }
+
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.equals(searchMenuItem)){
+        if (item.equals(searchMenuItem)) {
 
-        }else if(item.equals(sortAbMenuItem)){
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        } else if (item.equals(sortAbMenuItem)) {
             markerListFragment.orderByAlphabet();
         }
         return super.onOptionsItemSelected(item);
@@ -85,6 +109,16 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
         ft.addToBackStack(null);
         ft.commit();
         markerInfoFragment.updateMarker(marker);
+    }
+
+    @Override
+    public void updateToolBarItems(boolean isMarkersSelected) {
+        if (isMarkersSelected) {
+            mode = ApplicationMode.REMOVE;
+        } else {
+            mode = ApplicationMode.NORMAL;
+        }
+        startSpecificApplicationMode();
     }
 
     @Override

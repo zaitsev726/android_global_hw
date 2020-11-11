@@ -22,5 +22,6 @@
     <color name="refresh_progress_2">#FFA000</color>
     <color name="refresh_progress_3">#FF9800</color>
     <color name="sliding_menu_text_color">#8C8C8C</color>
+    <color name="selected_gray_color">#696969</color>
 
 </resources>

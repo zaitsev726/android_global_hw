@@ -19,4 +19,10 @@
         android:icon="@drawable/icon_toolbar_sort"
         android:title="@string/sort_ab"
         yourapp:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_remove"
+        android:icon="@drawable/icon_toolbar_remove"
+        android:title="@string/remove"
+        yourapp:showAsAction="always" />
 </menu>

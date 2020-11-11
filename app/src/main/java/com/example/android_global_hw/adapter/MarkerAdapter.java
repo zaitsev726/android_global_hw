@@ -2,6 +2,7 @@ package com.example.android_global_hw.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +26,21 @@ import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
     private List<Marker> markerList = new ArrayList<>();
+    private static boolean[] selects;
+    private static int selectsCount = 0;
+
     private int lastPosition = -1;
     private final Context context;
 
     public interface onClickListener {
 
         void onMarkerHolderClick(Marker marker);
-
+        void updateToolBarItems(boolean isMarkersSelected);
         DBHelper getDataBaseMarker();
     }
+
     private onClickListener listener;
+
     public void setOnClickListener(onClickListener listener) {
         this.listener = listener;
     }
@@ -42,6 +48,8 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     public void setItems(Collection<Marker> markers) {
         markerList.clear();
         markerList.addAll(markers);
+        selects = new boolean[markerList.size()];
+        selectsCount = 0;
         notifyDataSetChanged();
     }
 
@@ -66,7 +74,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
             @Override
             public int compare(Marker o1, Marker o2) {
                 int result = o1.getHeader().compareTo(o2.getHeader());
-                if(result != 0){
+                if (result != 0) {
                     return -result;
                 }
                 return result;
@@ -78,8 +86,13 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
 
     public MarkerAdapter(Context context, List<Marker> markers) {
         this.context = context;
-        setItems(markers);
+//        setItems(markers);
+        this.markerList = new ArrayList<>(markers);
+        if(selects == null){
+            selects = new boolean[markerList.size()];
+        }
     }
+
     class MarkerViewHolder extends RecyclerView.ViewHolder {
 
         private final View rootView;
@@ -127,16 +140,44 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MarkerAdapter.MarkerViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MarkerAdapter.MarkerViewHolder holder, final int position) {
         final Marker marker = markerList.get(position);
         if (markerList.size() > position) {
             holder.setChanges(marker);
+            if (selects[position])
+                holder.itemView.setBackgroundColor(Color.LTGRAY);
+            else
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
+
+
         if (listener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onMarkerHolderClick(marker);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    selects[position] = !selects[position];
+                    if (selects[position]) {
+                        holder.itemView.setBackgroundColor(Color.LTGRAY);
+                        selects[position] = true;
+                        if(selectsCount == 0){
+                            listener.updateToolBarItems(true);
+                        }
+                        selectsCount ++;
+                    } else {
+                        holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                        selects[position] = false;
+                        selectsCount --;
+                        if(selectsCount == 0){
+                            listener.updateToolBarItems(false);
+                        }
+                    }
+                    return false;
                 }
             });
         }
