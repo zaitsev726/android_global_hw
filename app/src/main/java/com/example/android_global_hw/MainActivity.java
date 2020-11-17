@@ -2,28 +2,28 @@ package com.example.android_global_hw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
     private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
     private String SAVED_STATE = "INSTANCE_SAVED";
-
-    private MenuItem searchMenuItem;
+    private SearchView searchMenuItem;
     private MenuItem sortAbMenuItem;
     private MenuItem removeMenuItem;
+    private MarkerAdapter adapter;
+
 
     private static ApplicationMode mode;
 
@@ -57,9 +57,24 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-        searchMenuItem = menu.findItem(R.id.action_search);
-        sortAbMenuItem = menu.findItem(R.id.action_sort);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchMenuItem = (SearchView) searchItem.getActionView();
+        searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.filer(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.filer(newText);
+                return false;
+            }
+        });
+        sortAbMenuItem =  menu.findItem(R.id.action_sort);
         removeMenuItem = menu.findItem(R.id.action_remove);
+
         if(mode == null)
             mode = ApplicationMode.NORMAL;
         startSpecificApplicationMode();
@@ -69,11 +84,12 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     private void startSpecificApplicationMode() {
 
         if (mode.equals(ApplicationMode.NORMAL)) {
-            searchMenuItem.setVisible(true);
+            searchMenuItem.setVisibility(View.VISIBLE);
             sortAbMenuItem.setVisible(true);
             removeMenuItem.setVisible(false);
         } else if (mode.equals(ApplicationMode.REMOVE)) {
-            searchMenuItem.setVisible(false);
+            searchMenuItem.setVisibility(View.INVISIBLE);
+            searchMenuItem.setIconified(true);
             sortAbMenuItem.setVisible(false);
             removeMenuItem.setVisible(true);
         }
@@ -119,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
             mode = ApplicationMode.NORMAL;
         }
         startSpecificApplicationMode();
+    }
+
+    @Override
+    public void setOnSearchViewListeners(MarkerAdapter adapter) {
+        this.adapter = adapter;
     }
 
     @Override

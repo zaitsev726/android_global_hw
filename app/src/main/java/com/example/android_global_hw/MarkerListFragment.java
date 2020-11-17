@@ -7,11 +7,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,10 +32,14 @@ public class MarkerListFragment extends Fragment {
     private MarkerAdapter.onClickListener listener;
     private static AlphabetMode orderMode;
 
-    private enum AlphabetMode {
-        AtoZ, ZtoA, Normal;
+    public MarkerAdapter getAdapter() {
+        return adapter;
     }
 
+    private enum AlphabetMode {
+        AtoZ, ZtoA, Normal;
+
+    }
     public MarkerListFragment() {
         // Required empty public constructor
     }
@@ -53,6 +62,7 @@ public class MarkerListFragment extends Fragment {
         Bundle args = new Bundle();
         MarkerListFragment fragment = new MarkerListFragment();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -90,15 +100,49 @@ public class MarkerListFragment extends Fragment {
             cursor.close();
         }
 
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
+
+
+
+        /*RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
         RecyclerView recyclerView = view.findViewById(R.id.marker_list);
         adapter = new MarkerAdapter(view.getContext(), markerList);
         if (listener != null) {
             adapter.setOnClickListener(listener);
         }
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
+        initializeAdapter(view);
+       /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_actionbar);
+
+        MenuItem searchItem = toolbar.findViewById(R.id.action_search);
+        SearchView searchMenuItem = (SearchView) searchItem.getActionView();
+        searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                getAdapter().filer(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getAdapter().filer(newText);
+                return false;
+            }
+        });*/
+
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void initializeAdapter(View view){
+            RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
+            RecyclerView recyclerView = view.findViewById(R.id.marker_list);
+            adapter = new MarkerAdapter(view.getContext(), markerList);
+            if (listener != null) {
+                adapter.setOnClickListener(listener);
+            }
+            recyclerView.setLayoutManager(manager);
+            recyclerView.setAdapter(adapter);
+
     }
 
     public void updateMarkerList(int markerId, String typeOfEditText, String newText) {

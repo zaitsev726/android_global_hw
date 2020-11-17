@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_global_hw.DBHelper;
@@ -26,28 +27,55 @@ import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
     private List<Marker> markerList = new ArrayList<>();
+    private List<Marker> markerListCopy = new ArrayList<>();
+
     private static boolean[] selects;
     private static int selectsCount = 0;
 
     private int lastPosition = -1;
     private final Context context;
 
+    public void filer(String text) {
+       // markerListCopy.clear();
+        //markerListCopy.addAll(markerList);
+        markerList.clear();
+        if (text.isEmpty()) {
+            markerList.addAll(markerListCopy);
+        } else {
+            text = text.toLowerCase();
+            for (Marker marker : markerListCopy) {
+                if (marker.getHeader().toLowerCase().contains(text) || marker.getLink().toLowerCase().contains(text)) {
+                    markerList.add(marker);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
     public interface onClickListener {
 
         void onMarkerHolderClick(Marker marker);
+
         void updateToolBarItems(boolean isMarkersSelected);
+
         DBHelper getDataBaseMarker();
+
+        void setOnSearchViewListeners(MarkerAdapter adapter);
+
     }
 
     private onClickListener listener;
 
     public void setOnClickListener(onClickListener listener) {
         this.listener = listener;
+        listener.setOnSearchViewListeners(this);
     }
 
     public void setItems(Collection<Marker> markers) {
         markerList.clear();
         markerList.addAll(markers);
+
         selects = new boolean[markerList.size()];
         selectsCount = 0;
         notifyDataSetChanged();
@@ -88,7 +116,8 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         this.context = context;
 //        setItems(markers);
         this.markerList = new ArrayList<>(markers);
-        if(selects == null){
+        this.markerListCopy.addAll(markerList);
+        if (selects == null) {
             selects = new boolean[markerList.size()];
         }
     }
@@ -165,15 +194,15 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
                     if (selects[position]) {
                         holder.itemView.setBackgroundColor(Color.LTGRAY);
                         selects[position] = true;
-                        if(selectsCount == 0){
+                        if (selectsCount == 0) {
                             listener.updateToolBarItems(true);
                         }
-                        selectsCount ++;
+                        selectsCount++;
                     } else {
                         holder.itemView.setBackgroundColor(Color.TRANSPARENT);
                         selects[position] = false;
-                        selectsCount --;
-                        if(selectsCount == 0){
+                        selectsCount--;
+                        if (selectsCount == 0) {
                             listener.updateToolBarItems(false);
                         }
                     }

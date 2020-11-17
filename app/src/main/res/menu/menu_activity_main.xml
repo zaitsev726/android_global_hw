@@ -5,7 +5,7 @@
         android:id="@+id/action_search"
         android:icon="@drawable/icon_toolbar_search"
         android:title="@android:string/search_go"
-        yourapp:actionViewClass="android.widget.SearchView"
+        yourapp:actionViewClass="androidx.appcompat.widget.SearchView"
         yourapp:showAsAction="always|collapseActionView" />
 
     <item
