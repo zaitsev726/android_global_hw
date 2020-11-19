@@ -30,23 +30,13 @@ public class MarkerListFragment extends Fragment {
     private List<Marker> markerList;
     private MarkerAdapter adapter;
     private MarkerAdapter.onClickListener listener;
-    private static AlphabetMode orderMode;
 
-    public MarkerAdapter getAdapter() {
-        return adapter;
-    }
-
-    private enum AlphabetMode {
-        AtoZ, ZtoA, Normal;
-
-    }
     public MarkerListFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        orderMode = AlphabetMode.AtoZ;
         super.onCreate(savedInstanceState);
     }
 
@@ -169,17 +159,4 @@ public class MarkerListFragment extends Fragment {
         adapter.setItems(markerList);
     }
 
-    public void orderByAlphabet() {
-        if(orderMode.equals(AlphabetMode.AtoZ)){
-            adapter.orderByAtoZMode(new ArrayList<>(markerList));
-            orderMode = AlphabetMode.ZtoA;
-        }else if(orderMode.equals(AlphabetMode.ZtoA)){
-            adapter.orderByZtoAMode(new ArrayList<>(markerList));
-            orderMode = AlphabetMode.Normal;
-        }else if(orderMode.equals(AlphabetMode.Normal)){
-            adapter.setItems(new ArrayList<>(markerList));
-            orderMode = AlphabetMode.AtoZ;
-        }
-
-    }
 }

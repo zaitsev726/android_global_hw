@@ -16,9 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.android_global_hw.adapter.MarkerAdapter;
 
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
-    private MarkerListFragment markerListFragment;
+  //  private MarkerListFragment markerListFragment;
     private DBHelper dbHelper;
-    private String SAVED_STATE = "INSTANCE_SAVED";
+    private final String SAVED_STATE = "INSTANCE_SAVED";
     private SearchView searchMenuItem;
     private MenuItem sortAbMenuItem;
     private MenuItem removeMenuItem;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     private static ApplicationMode mode;
 
     private enum ApplicationMode {
-        NORMAL, REMOVE, SEARCH, SORT;
+        NORMAL, REMOVE, SEARCH
     }
 
     @Override
@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
                 return false;
             }
         });
-        sortAbMenuItem =  menu.findItem(R.id.action_sort);
+        sortAbMenuItem = menu.findItem(R.id.action_sort);
         removeMenuItem = menu.findItem(R.id.action_remove);
 
-        if(mode == null)
+        if (mode == null)
             mode = ApplicationMode.NORMAL;
         startSpecificApplicationMode();
         return true;
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
 
         if (mode.equals(ApplicationMode.NORMAL)) {
             searchMenuItem.setVisibility(View.VISIBLE);
+            searchMenuItem.setIconified(false);
             sortAbMenuItem.setVisible(true);
             removeMenuItem.setVisible(false);
         } else if (mode.equals(ApplicationMode.REMOVE)) {
@@ -92,25 +93,36 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
             searchMenuItem.setIconified(true);
             sortAbMenuItem.setVisible(false);
             removeMenuItem.setVisible(true);
+        } else if (mode.equals(ApplicationMode.SEARCH)) {
+            sortAbMenuItem.setVisible(false);
+            removeMenuItem.setVisible(false);
         }
 
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.equals(searchMenuItem)) {
-
-        } else if (item.equals(sortAbMenuItem)) {
-            markerListFragment.orderByAlphabet();
+        if (mode == ApplicationMode.REMOVE && !item.equals(removeMenuItem)) {
+            adapter.clearSelection();
+        } else if (mode == ApplicationMode.REMOVE && item.equals(removeMenuItem)) {
+            //TODO add service to delete from database
         }
+
+        if (item.equals(searchMenuItem)) {
+            mode = ApplicationMode.SEARCH;
+        } else if (item.equals(sortAbMenuItem)) {
+            adapter.orderByAlphabet();
+            mode = ApplicationMode.NORMAL;
+        }
+        startSpecificApplicationMode();
         return super.onOptionsItemSelected(item);
     }
 
     private void addFragment() {
-        markerListFragment = MarkerListFragment.newInstance();
+       // markerListFragment = MarkerListFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.main_fragment, markerListFragment)
+                .add(R.id.main_fragment,  MarkerListFragment.newInstance())
                 // .addToBackStack(null)
                 .commit();
     }

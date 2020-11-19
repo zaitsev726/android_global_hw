@@ -8,11 +8,6 @@
         yourapp:actionViewClass="androidx.appcompat.widget.SearchView"
         yourapp:showAsAction="always|collapseActionView" />
 
-    <item
-        android:id="@+id/action_edit"
-        android:icon="@drawable/icon_toolbar_edit"
-        android:title="@string/edit"
-        yourapp:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sort"

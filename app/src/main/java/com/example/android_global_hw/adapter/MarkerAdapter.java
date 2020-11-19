@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_global_hw.DBHelper;
 import com.example.android_global_hw.Marker;
+import com.example.android_global_hw.MarkerListFragment;
 import com.example.android_global_hw.R;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
-    private List<Marker> markerList = new ArrayList<>();
-    private List<Marker> markerListCopy = new ArrayList<>();
+    private List<Marker> markerList;
+    private final List<Marker> markerListCopy = new ArrayList<>();
 
     private static boolean[] selects;
     private static int selectsCount = 0;
@@ -35,9 +36,40 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     private int lastPosition = -1;
     private final Context context;
 
+
+    private static AlphabetMode orderMode;
+    /*
+        Enum для установки состояния сортировки
+     */
+    private enum AlphabetMode {
+        AtoZ, ZtoA, Normal;
+        public static AlphabetMode getPrevious(AlphabetMode mode){
+            if(mode.equals(AtoZ)){
+                return Normal;
+            }else if (mode.equals(ZtoA)) {
+                return AtoZ;
+            }else
+                return ZtoA;
+        }
+    }
+    /*
+        Метод, сортирующий лист заметок в выбранном порядке
+     */
+    public void orderByAlphabet() {
+        if(orderMode.equals(AlphabetMode.AtoZ)){
+            orderByAtoZMode(new ArrayList<>(markerList));
+            orderMode = AlphabetMode.ZtoA;
+        }else if(orderMode.equals(AlphabetMode.ZtoA)){
+            orderByZtoAMode(new ArrayList<>(markerList));
+            orderMode = AlphabetMode.Normal;
+        }else if(orderMode.equals(AlphabetMode.Normal)){
+            setItems(new ArrayList<>(markerListCopy));
+            orderMode = AlphabetMode.AtoZ;
+        }
+
+    }
+
     public void filer(String text) {
-       // markerListCopy.clear();
-        //markerListCopy.addAll(markerList);
         markerList.clear();
         if (text.isEmpty()) {
             markerList.addAll(markerListCopy);
@@ -114,11 +146,17 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
 
     public MarkerAdapter(Context context, List<Marker> markers) {
         this.context = context;
-//        setItems(markers);
+
         this.markerList = new ArrayList<>(markers);
         this.markerListCopy.addAll(markerList);
         if (selects == null) {
             selects = new boolean[markerList.size()];
+        }
+        if(orderMode == null)
+            orderMode = AlphabetMode.AtoZ;
+        else {
+            orderMode = AlphabetMode.getPrevious(orderMode);
+            orderByAlphabet();
         }
     }
 
@@ -230,5 +268,14 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
         }
+    }
+
+    public void clearSelection(){
+        selects = new boolean[markerList.size()];
+        notifyDataSetChanged();
+    }
+
+    public void deleteSelectedItems(){
+        
     }
 }
