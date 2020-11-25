@@ -47,12 +47,12 @@
         android:text="@string/close"
         />
     <Button
-        android:id="@+id/delete_button"
+        android:id="@+id/save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/close_button"
         android:layout_toEndOf="@id/det_marker_icon"
-        android:text="@string/delete"/>
+        android:text="@string/save"/>
 
     <EditText
         android:id="@+id/det_marker_header"

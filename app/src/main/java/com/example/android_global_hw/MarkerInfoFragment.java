@@ -1,13 +1,16 @@
 package com.example.android_global_hw;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,11 +37,11 @@ public class MarkerInfoFragment extends Fragment {
     private EditText detMarkerDescription;
 
     //TODO add functional to buttons
-    private Button startButton;
-    private Button closeButton;
-    private Button deleteButton;
-
+    private Button startLinkButton;
+    private Button closeMarkerButton;
+    private Button saveMarkerButton;
     private boolean isCreated = false;
+    private static boolean textWasChanged = false;
 
     public MarkerInfoFragment() {
         // Required empty public constructor
@@ -90,9 +93,9 @@ public class MarkerInfoFragment extends Fragment {
         detMarkerLink = view.findViewById(R.id.det_marker_link);
         detMarkerHeader = view.findViewById(R.id.det_marker_header);
         detMarkerDescription = view.findViewById(R.id.det_marker_description);
-        startButton = view.findViewById(R.id.start_button);
-        closeButton = view.findViewById(R.id.close_button);
-        deleteButton = view.findViewById(R.id.delete_button);
+        startLinkButton = view.findViewById(R.id.start_button);
+        closeMarkerButton = view.findViewById(R.id.close_button);
+        saveMarkerButton = view.findViewById(R.id.save_button);
 
         isCreated = true;
         if (marker != null) {
@@ -106,7 +109,9 @@ public class MarkerInfoFragment extends Fragment {
         setEditTextListeners(detMarkerLink);
         setEditTextListeners(detMarkerHeader);
         setEditTextListeners(detMarkerDescription);
-        setStartLinkListener(startButton);
+        setStartLinkListener(startLinkButton);
+        setCloseMarkerListener(closeMarkerButton);
+        setSaveMarkerListener(saveMarkerButton);
     }
 
 
@@ -116,7 +121,9 @@ public class MarkerInfoFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    String newText = editText.getText().toString();
+                    textWasChanged = true;
+
+                   /* String newText = editText.getText().toString();
                     if (editText.getId() == R.id.det_marker_link) {
                         listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
                     } else if (editText.getId() == R.id.det_marker_header) {
@@ -124,7 +131,7 @@ public class MarkerInfoFragment extends Fragment {
                     } else if (editText.getId() == R.id.det_marker_description) {
                         listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
                     } else
-                        throw new NullPointerException();
+                        throw new NullPointerException();*/
 
                     final InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity())
                             .getApplicationContext()
@@ -156,5 +163,56 @@ public class MarkerInfoFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setCloseMarkerListener(Button closeMarkerButton) {
+        closeMarkerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textWasChanged) {
+                    AlertDialog diaBox = AskOption();
+                    diaBox.show();
+                } else {
+                    getActivity().onBackPressed();
+                }
+            }
+        });
+    }
+
+    private void setSaveMarkerListener(Button saveMarkerButton) {
+        saveMarkerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, String.valueOf(detMarkerLink.getText()));
+                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, String.valueOf(detMarkerHeader.getText()));
+                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, String.valueOf(detMarkerDescription));
+                textWasChanged = false;
+            }
+        });
+    }
+
+    private AlertDialog AskOption() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle(getResources().getString(R.string.save_title));
+        builder.setMessage(getResources().getString(R.string.save_message));
+        builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //your deleting code
+                getActivity().onBackPressed();
+                dialog.dismiss();
+            }
+
+        });
+        builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog myQuittingDialogBox = builder
+                .create();
+        return myQuittingDialogBox;
+
     }
 }

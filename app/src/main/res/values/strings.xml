@@ -14,4 +14,10 @@
     <string name="edit">Edit</string>
     <string name="sort_ab">Sort</string>
     <string name="remove">Remove</string>
+    <string name="add">Add new Marker</string>
+    <string name="save">Save marker</string>
+    <string name="save_title">Saving</string>
+    <string name="save_message">Do you want to quit without save?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

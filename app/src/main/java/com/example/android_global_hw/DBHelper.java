@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -76,5 +78,13 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(DBHelper.KEY_HEADER, "it's youtube!!");
         contentValues.put(DBHelper.KEY_DESCRIPTION, "4");
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
+    }
+
+    public void deleteSelectedItems(ArrayList<Marker> selectedItems){
+        SQLiteDatabase db = getWritableDatabase();
+        for(Marker marker: selectedItems){
+            db.delete(TABLE_MARKER, KEY_ID + "=" + marker.getMarkerID(), null);
+        }
+
     }
 }
