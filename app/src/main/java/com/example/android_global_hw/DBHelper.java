@@ -44,14 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateTable(int markerId, String typeOfEditText, String newText) {
-        System.out.println(markerId + " ID IS");
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(typeOfEditText, newText);
-        int update = getWritableDatabase().update(DBHelper.TABLE_MARKER, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(markerId)});
-        System.out.println("UPDATED " + update);
-    }
-
 
     private void initializeDataBase(SQLiteDatabase db) {
         //TODO add description
@@ -86,5 +78,21 @@ public class DBHelper extends SQLiteOpenHelper {
             db.delete(TABLE_MARKER, KEY_ID + "=" + marker.getMarkerID(), null);
         }
 
+    }
+
+    public void updateMarker(int markerId, String newDetMarkerLink, String newDetMarkerHeader, String newDetMarkerDescription) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_LINK, newDetMarkerLink);
+        contentValues.put(KEY_HEADER, newDetMarkerHeader);
+        contentValues.put(KEY_DESCRIPTION, newDetMarkerDescription);
+        getWritableDatabase().update(DBHelper.TABLE_MARKER, contentValues, KEY_ID + " = ?", new String[]{String.valueOf(markerId)});
+    }
+
+    public void insertNewMarker(String newDetMarkerLink, String newDetMarkerHeader, String newDetMarkerDescription) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_LINK, newDetMarkerLink);
+        contentValues.put(KEY_HEADER, newDetMarkerHeader);
+        contentValues.put(KEY_DESCRIPTION, newDetMarkerDescription);
+        getWritableDatabase().insert(DBHelper.TABLE_MARKER, null, contentValues);
     }
 }

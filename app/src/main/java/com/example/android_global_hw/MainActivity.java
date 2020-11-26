@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
             sortAbMenuItem.setVisible(true);
             removeMenuItem.setVisible(false);
             addMenuItem.setVisible(true);
-//            Toolbar mActionBarToolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-//            FrameLayout frameLayout = findViewById(R.id.main_fragment);
-//            mActionBarToolBar.setBackgroundColor(getResources().getColor(R.color.toolbar_orange));
-//            frameLayout.setBackgroundColor(getResources().getColor(R.color.refresh_progress_1));
+            Toolbar mActionBarToolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+            FrameLayout frameLayout = findViewById(R.id.main_fragment);
+            mActionBarToolBar.setBackgroundColor(getResources().getColor(R.color.toolbar_orange));
+            frameLayout.setBackgroundColor(getResources().getColor(R.color.refresh_progress_1));
 
         } else if (mode.equals(ApplicationMode.REMOVE)) {
             searchMenuItem.setVisible(false);
@@ -113,10 +113,10 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
             sortAbMenuItem.setVisible(false);
             removeMenuItem.setVisible(false);
             addMenuItem.setVisible(false);
-            //  Toolbar mActionBarToolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-            // FrameLayout frameLayout = findViewById(R.id.main_fragment);
-            //   mActionBarToolBar.setBackgroundColor(getResources().getColor(R.color.status_bar_red));
-            //  frameLayout.setBackgroundColor(getResources().getColor(R.color.price_red));
+            Toolbar mActionBarToolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+            FrameLayout frameLayout = findViewById(R.id.main_fragment);
+            mActionBarToolBar.setBackgroundColor(getResources().getColor(R.color.status_bar_red));
+            frameLayout.setBackgroundColor(getResources().getColor(R.color.price_red));
         }
 
     }
@@ -190,8 +190,28 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     }
 
     @Override
-    public void markerItemClicked(int markerId, String typeOfEditText, String newText) {
-        dbHelper.updateTable(markerId, typeOfEditText, newText);
+    public void setNormalMode() {
+        mode = ApplicationMode.NORMAL;
+        if (searchMenuItem != null)
+            startSpecificApplicationMode();
+    }
+
+
+    @Override
+    public void setAddMode() {
+        mode = ApplicationMode.ADD;
+        if (searchMenuItem != null)
+            startSpecificApplicationMode();
+    }
+
+
+    @Override
+    public void markerSaveChanges(int markerId, String newDetMarkerLink, String newDetMarkerHeader, String newDetMarkerDescription) {
+        if (markerId == 0) {
+            dbHelper.insertNewMarker(newDetMarkerLink, newDetMarkerHeader, newDetMarkerDescription);
+        } else {
+            dbHelper.updateMarker(markerId, newDetMarkerLink, newDetMarkerHeader, newDetMarkerDescription);
+        }
     }
 
     @Override

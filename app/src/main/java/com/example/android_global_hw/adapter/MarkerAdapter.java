@@ -69,6 +69,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
             } else if (orderMode.equals(AlphabetMode.Normal)) {
                 markerList = new ArrayList<>(markerListCopy);
                 orderMode = AlphabetMode.AtoZ;
+                notifyDataSetChanged();
             }
         }
     }
@@ -86,7 +87,6 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
                     }
                 }
             }
-
             notifyDataSetChanged();
         }
     }
@@ -100,6 +100,8 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         DBHelper getDataBaseMarker();
 
         void setOnSearchViewListeners(MarkerAdapter adapter);
+
+        void setNormalMode();
     }
 
     private onClickListener listener;
@@ -154,7 +156,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         if (markers != null) {
             this.markerList = new ArrayList<>(markers);
             this.markerListCopy.addAll(markerList);
-            if (selects == null) {
+            if (selects == null || selects.length < markers.size()) {
                 selects = new boolean[markerList.size()];
             }
         }
@@ -166,7 +168,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
         }
     }
 
-    class MarkerViewHolder extends RecyclerView.ViewHolder {
+    static class MarkerViewHolder extends RecyclerView.ViewHolder {
 
         private final View rootView;
 

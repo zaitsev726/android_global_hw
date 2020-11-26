@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +25,9 @@ import java.util.Objects;
 public class MarkerInfoFragment extends Fragment {
 
     interface itemClickListener {
-        void markerItemClicked(int markerId, String typeOfEditText, String newText);
+        void markerSaveChanges(int markerId, String newDetMarkerLink, String newDetMarkerHeader,
+                               String newDetMarkerDescription);
+        void setAddMode();
     }
 
     private itemClickListener listener;
@@ -36,7 +37,6 @@ public class MarkerInfoFragment extends Fragment {
     private EditText detMarkerHeader;
     private EditText detMarkerDescription;
 
-    //TODO add functional to buttons
     private Button startLinkButton;
     private Button closeMarkerButton;
     private Button saveMarkerButton;
@@ -89,6 +89,8 @@ public class MarkerInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(listener != null)
+            listener.setAddMode();
         detMarkerIcon = view.findViewById(R.id.det_marker_icon);
         detMarkerLink = view.findViewById(R.id.det_marker_link);
         detMarkerHeader = view.findViewById(R.id.det_marker_header);
@@ -183,9 +185,20 @@ public class MarkerInfoFragment extends Fragment {
         saveMarkerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, String.valueOf(detMarkerLink.getText()));
-                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, String.valueOf(detMarkerHeader.getText()));
-                listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, String.valueOf(detMarkerDescription));
+                String link = String.valueOf(detMarkerLink.getText());
+                String header = String.valueOf(detMarkerHeader.getText());
+                String description = String.valueOf(detMarkerDescription.getText());
+                if (marker == null)
+                    marker = new Marker(link, header, description);
+                else {
+                    marker.setLink(link);
+                    marker.setHeader(header);
+                    marker.setDescription(description);
+                }
+                listener.markerSaveChanges(marker.getMarkerID(),
+                        marker.getLink(),
+                        marker.getHeader(),
+                        marker.getDescription());
                 textWasChanged = false;
             }
         });

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.util.Objects;
 
 public class Marker {
-    private int markerID;
+    private int markerID = 0;
     private Bitmap icon;
     private String link;
     private String header;
@@ -20,9 +20,11 @@ public class Marker {
     }
 
     public Marker(String link, String header, String description){
+        markerID = 0;
         this.link = link;
         this.header = header;
         this.description = description;
+        this.icon = null;
     }
 
     public void setHeader(String header){this.header = header;}

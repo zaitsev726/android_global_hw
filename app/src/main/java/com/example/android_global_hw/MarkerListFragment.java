@@ -67,6 +67,7 @@ public class MarkerListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         if (listener.getDataBaseMarker() != null) {
+            listener.setNormalMode();
             SQLiteDatabase database = listener.getDataBaseMarker().getReadableDatabase();
             Cursor cursor = database.query(DBHelper.TABLE_MARKER, null, null, null, null, null, null);
             if (cursor.moveToFirst()) {
