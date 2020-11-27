@@ -1,6 +1,7 @@
 package com.example.android_global_hw.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,12 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_global_hw.DBHelper;
-import com.example.android_global_hw.Marker;
-import com.example.android_global_hw.MarkerListFragment;
+import com.example.android_global_hw.database.Marker;
 import com.example.android_global_hw.R;
 
 import java.util.ArrayList;
@@ -27,13 +25,26 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
+    public interface onClickListener {
+
+        void onMarkerHolderClick(Marker marker);
+
+        void updateToolBarItems(boolean isMarkersSelected);
+
+        Cursor findAllMarkersInDataBase();
+
+        void setOnSearchViewListeners(MarkerAdapter adapter);
+
+        void setNormalMode();
+    }
     private List<Marker> markerList;
+
     private final List<Marker> markerListCopy = new ArrayList<>();
-
     private static boolean[] selects;
-    private static int selectsCount = 0;
 
+    private static int selectsCount = 0;
     private int lastPosition = -1;
+
     private final Context context;
 
 
@@ -44,7 +55,6 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
      */
     private enum AlphabetMode {
         AtoZ, ZtoA, Normal;
-
         public static AlphabetMode getPrevious(AlphabetMode mode) {
             if (mode.equals(AtoZ)) {
                 return Normal;
@@ -53,11 +63,12 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
             } else
                 return ZtoA;
         }
-    }
 
+    }
     /*
         Метод, сортирующий лист заметок в выбранном порядке
      */
+
     public void orderByAlphabet() {
         if(markerList != null && markerList.size() > 0) {
             if (orderMode.equals(AlphabetMode.AtoZ)) {
@@ -89,19 +100,6 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
             }
             notifyDataSetChanged();
         }
-    }
-
-    public interface onClickListener {
-
-        void onMarkerHolderClick(Marker marker);
-
-        void updateToolBarItems(boolean isMarkersSelected);
-
-        DBHelper getDataBaseMarker();
-
-        void setOnSearchViewListeners(MarkerAdapter adapter);
-
-        void setNormalMode();
     }
 
     private onClickListener listener;

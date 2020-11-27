@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.android_global_hw.database.Marker;
+
 import java.util.Objects;
 
 public class MarkerInfoFragment extends Fragment {
@@ -124,17 +126,6 @@ public class MarkerInfoFragment extends Fragment {
                 if (event.getAction() == KeyEvent.ACTION_DOWN &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     textWasChanged = true;
-
-                   /* String newText = editText.getText().toString();
-                    if (editText.getId() == R.id.det_marker_link) {
-                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_LINK, newText);
-                    } else if (editText.getId() == R.id.det_marker_header) {
-                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_HEADER, newText);
-                    } else if (editText.getId() == R.id.det_marker_description) {
-                        listener.markerItemClicked(marker.getMarkerID(), DBHelper.KEY_DESCRIPTION, newText);
-                    } else
-                        throw new NullPointerException();*/
-
                     final InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity())
                             .getApplicationContext()
                             .getSystemService(Context.INPUT_METHOD_SERVICE);

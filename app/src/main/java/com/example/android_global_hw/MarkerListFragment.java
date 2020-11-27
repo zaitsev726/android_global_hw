@@ -2,28 +2,23 @@ package com.example.android_global_hw;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
+import com.example.android_global_hw.database.DBHelper;
+import com.example.android_global_hw.database.Marker;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MarkerListFragment extends Fragment {
@@ -66,10 +61,9 @@ public class MarkerListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        if (listener.getDataBaseMarker() != null) {
+        if (listener.findAllMarkersInDataBase() != null) {
             listener.setNormalMode();
-            SQLiteDatabase database = listener.getDataBaseMarker().getReadableDatabase();
-            Cursor cursor = database.query(DBHelper.TABLE_MARKER, null, null, null, null, null, null);
+            Cursor cursor = listener.findAllMarkersInDataBase();
             if (cursor.moveToFirst()) {
                 markerList = new ArrayList<>();
                 int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
@@ -91,36 +85,7 @@ public class MarkerListFragment extends Fragment {
             cursor.close();
         }
 
-
-
-
-        /*RecyclerView.LayoutManager manager = new LinearLayoutManager(view.getContext());
-        RecyclerView recyclerView = view.findViewById(R.id.marker_list);
-        adapter = new MarkerAdapter(view.getContext(), markerList);
-        if (listener != null) {
-            adapter.setOnClickListener(listener);
-        }
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adapter);*/
         initializeAdapter(view);
-       /* Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar_actionbar);
-
-        MenuItem searchItem = toolbar.findViewById(R.id.action_search);
-        SearchView searchMenuItem = (SearchView) searchItem.getActionView();
-        searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                getAdapter().filer(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                getAdapter().filer(newText);
-                return false;
-            }
-        });*/
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -135,29 +100,4 @@ public class MarkerListFragment extends Fragment {
             recyclerView.setAdapter(adapter);
 
     }
-
-    public void updateMarkerList(int markerId, String typeOfEditText, String newText) {
-        adapter.clearItems();
-       // Marker marker2Update = deleteItem(markerId);
-       // marker2Update.updateField(typeOfEditText, newText);
-       // insertNewElement(marker2Update);
-    }
-
-    public Marker deleteItem(int markerId) {
-        Iterator<Marker> iterator = markerList.iterator();
-        while (iterator.hasNext()) {
-            Marker next = iterator.next();
-            if (next.getMarkerID() == markerId) {
-                iterator.remove();
-                return next;
-            }
-        }
-        throw new NullPointerException();
-    }
-
-    public void insertNewElement(Marker marker) {
-        markerList.add(marker);
-        adapter.setItems(markerList);
-    }
-
 }

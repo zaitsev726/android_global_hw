@@ -1,7 +1,8 @@
-package com.example.android_global_hw;
+package com.example.android_global_hw.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -19,8 +20,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String KEY_LINK = "link";
     public static final String KEY_HEADER = "header";
     public static final String KEY_DESCRIPTION = "description";
-    //TODO add bitmap
-
 
     public DBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -72,9 +71,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(DBHelper.TABLE_MARKER, null, contentValues);
     }
 
-    public void deleteSelectedItems(ArrayList<Marker> selectedItems){
+    public void deleteSelectedItems(ArrayList<Marker> selectedItems) {
         SQLiteDatabase db = getWritableDatabase();
-        for(Marker marker: selectedItems){
+        for (Marker marker : selectedItems) {
             db.delete(TABLE_MARKER, KEY_ID + "=" + marker.getMarkerID(), null);
         }
 
@@ -94,5 +93,10 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(KEY_HEADER, newDetMarkerHeader);
         contentValues.put(KEY_DESCRIPTION, newDetMarkerDescription);
         getWritableDatabase().insert(DBHelper.TABLE_MARKER, null, contentValues);
+    }
+
+    public Cursor findAllMarkersInDataBase() {
+        SQLiteDatabase database = getReadableDatabase();
+        return database.query(DBHelper.TABLE_MARKER, null, null, null, null, null, null);
     }
 }

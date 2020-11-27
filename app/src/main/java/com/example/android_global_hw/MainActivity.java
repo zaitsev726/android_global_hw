@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.graphics.Color;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.text.style.BackgroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.widget.FrameLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.android_global_hw.adapter.MarkerAdapter;
+import com.example.android_global_hw.database.DBHelper;
+import com.example.android_global_hw.database.Marker;
 
 public class MainActivity extends AppCompatActivity implements MarkerAdapter.onClickListener, MarkerInfoFragment.itemClickListener {
     //  private MarkerListFragment markerListFragment;
@@ -185,8 +186,10 @@ public class MainActivity extends AppCompatActivity implements MarkerAdapter.onC
     }
 
     @Override
-    public DBHelper getDataBaseMarker() {
-        return dbHelper;
+    public Cursor findAllMarkersInDataBase() {
+        if (dbHelper == null)
+            return null;
+        return dbHelper.findAllMarkersInDataBase();
     }
 
     @Override
